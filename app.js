@@ -55,6 +55,26 @@ app.get("/recipes", async (req, res) => {
   }
 });
 
+// Route to fetch random recipes from Spoonacular API
+app.get("/random-recipes", async (req, res) => {
+  try {
+    const apiKey = process.env.SPOONACULAR_API_KEY;
+    const apiUrl = `https://api.spoonacular.com/recipes/random?number=5&apiKey=${apiKey}`;
+
+    const response = await axios.get(apiUrl);
+    const recipes = response.data.recipes;
+
+    res.render("recipes.ejs", { recipes });
+  } catch (error) {
+    console.error("Error fetching random recipes:", error.message);
+    res.status(500).send("Error fetching random recipes");
+  }
+});
+
+app.get("/", (req, res) => {
+  res.render("index.ejs");
+});
+
 app.get("/", (req, res) => {
   res.render("index.ejs");
 });
@@ -79,16 +99,27 @@ app.post("/favorites/add", async (req, res) => {
   try {
     const { recipeId, title, sourceUrl } = req.body;
 
-    const queryText = `
-          INSERT INTO favorites (recipe_id, title, source_url)
-          VALUES ($1, $2, $3)
-          RETURNING id;
+    // Check if the recipe with this recipeId already exists in favorites
+    const checkQuery = `
+      SELECT * FROM favorites WHERE recipe_id = $1;
+    `;
+    const checkValues = [recipeId];
+    const { rows } = await db.query(checkQuery, checkValues);
+
+    if (rows.length > 0) {
+      // Recipe already exists in favorites
+      res.redirect("/favorites");
+    } else {
+      // Add the recipe to favorites
+      const insertQuery = `
+        INSERT INTO favorites (recipe_id, title, source_url)
+        VALUES ($1, $2, $3);
       `;
+      const insertValues = [recipeId, title, sourceUrl];
+      await db.query(insertQuery, insertValues);
 
-    const values = [recipeId, title, sourceUrl];
-    const result = await db.query(queryText, values);
-
-    res.redirect("/favorites");
+      res.redirect("/favorites");
+    }
   } catch (error) {
     console.error("Error adding favorite recipe:", error.message);
     res.status(500).send("Error adding favorite recipe");
