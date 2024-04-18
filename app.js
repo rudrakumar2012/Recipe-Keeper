@@ -40,23 +40,135 @@ app.use(express.static("public"));
  * @apiError (500 Internal Server Error) {String} message Error message
  */
 app.get("/recipes", async (req, res) => {
-    try {
-      const { query } = req.query; // Extract query parameter from request
-      const apiKey = process.env.SPOONACULAR_API_KEY;
-      const apiUrl = `https://api.spoonacular.com/recipes/search?query=${query}&apiKey=${apiKey}`;
-  
-      const response = await axios.get(apiUrl); // Make GET request to Spoonacular API
-      const recipes = response.data.results; // Extract recipes from API response
+  try {
+    const { query } = req.query; // Extract query parameter from request
+    const apiKey = process.env.SPOONACULAR_API_KEY;
+    const apiUrl = `https://api.spoonacular.com/recipes/search?query=${query}&apiKey=${apiKey}`;
 
-      res.render("recipes.ejs", { recipes }); // Render recipes.ejs template with fetched recipes
-    } catch (error) {
-      console.error("Error fetching recipes:", error.message);
-      res.status(500).send("Error fetching recipes");
-    }
-  });
+    const response = await axios.get(apiUrl); // Make GET request to Spoonacular API
+    const recipes = response.data.results; // Extract recipes from API response
+
+    res.render("recipes.ejs", { recipes }); // Render recipes.ejs template with fetched recipes
+  } catch (error) {
+    console.error("Error fetching recipes:", error.message);
+    res.status(500).send("Error fetching recipes");
+  }
+});
 
 app.get("/", (req, res) => {
   res.render("index.ejs");
+});
+
+// Route to display favorite recipes
+app.get("/favorites", async (req, res) => {
+  try {
+    const queryText = `
+          SELECT * FROM favorites ORDER BY id ASC ;
+      `;
+    const { rows } = await db.query(queryText);
+
+    res.render("favorites.ejs", { favorites: rows });
+  } catch (error) {
+    console.error("Error fetching favorite recipes:", error.message);
+    res.status(500).send("Error fetching favorite recipes");
+  }
+});
+
+// Add favorite recipe
+app.post("/favorites/add", async (req, res) => {
+  try {
+    const { recipeId, title, sourceUrl } = req.body;
+
+    const queryText = `
+          INSERT INTO favorites (recipe_id, title, source_url)
+          VALUES ($1, $2, $3)
+          RETURNING id;
+      `;
+
+    const values = [recipeId, title, sourceUrl];
+    const result = await db.query(queryText, values);
+
+    res.redirect("/favorites");
+  } catch (error) {
+    console.error("Error adding favorite recipe:", error.message);
+    res.status(500).send("Error adding favorite recipe");
+  }
+});
+
+// Delete favorite recipe
+app.post("/favorites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const queryText = `
+          DELETE FROM favorites
+          WHERE id = $1;
+      `;
+
+    const values = [id];
+    await db.query(queryText, values);
+
+    res.redirect("/favorites"); // Redirect to favorite recipes page after deletion
+  } catch (error) {
+    console.error("Error deleting favorite recipe:", error.message);
+    res.status(500).send("Error deleting favorite recipe");
+  }
+});
+
+// Add or Update note for a favorite recipe
+app.post("/favorites/:id/note", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { note } = req.body;
+
+    let queryText = '';
+    let values = [];
+
+    if (note) {
+      // Update existing note
+      queryText = `
+        UPDATE favorites
+        SET note = $1
+        WHERE id = $2;
+      `;
+      values = [note, id];
+    } else {
+      // Add new note (if note is empty, remove existing note)
+      queryText = `
+        UPDATE favorites
+        SET note = NULL
+        WHERE id = $1;
+      `;
+      values = [id];
+    }
+
+    await db.query(queryText, values);
+
+    res.redirect("/favorites"); // Redirect back to favorites page after updating note
+  } catch (error) {
+    console.error("Error updating note:", error.message);
+    res.status(500).send("Error updating note");
+  }
+});
+// Delete note for a favorite recipe
+app.delete("/favorites/:id/note", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const queryText = `
+      UPDATE favorites
+      SET note = NULL
+      WHERE id = $1;
+    `;
+
+    const values = [id];
+    await db.query(queryText, values);
+
+    res.sendStatus(204); // Send a success response with no content
+  } catch (error) {
+    console.error("Error deleting note:", error.message);
+    res.status(500).send("Error deleting note");
+  }
 });
 
 app.listen(port, () => {

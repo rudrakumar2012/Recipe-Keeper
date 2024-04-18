@@ -2,9 +2,11 @@
 
 <h1>Recipe Search</h1>
 <form action="/recipes" method="GET">
-    <label for="query">Search for recipes:</label>
-    <input type="text" id="query" name="query" required>
-    <button type="submit">Search</button>
+  <label for="query">Search for recipes:</label>
+  <input type="text" id="query" name="query" required />
+  <button type="submit">Search</button>
 </form>
+<br />
+<a href="/favorites">View Favorite Recipes</a>
 
 <%- include('./partials/footer.ejs') %>
