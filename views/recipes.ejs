@@ -1,0 +1,14 @@
+<%- include('./partials/header.ejs') %>
+
+<h1>Recipes</h1>
+<ul>
+  <% recipes.forEach(recipe => { %>
+  <li>
+    <h2><%= recipe.title %></h2>
+    <p>Preparation time: <%= recipe.readyInMinutes %> minutes</p>
+    <p>Servings: <%= recipe.servings %></p>
+    <p><a href="<%= recipe.sourceUrl %>" target="_blank">View Recipe</a></p>
+  </li>
+  <% }); %>
+</ul>
+<%- include('./partials/footer.ejs') %>

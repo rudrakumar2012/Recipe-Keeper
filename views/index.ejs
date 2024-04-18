@@ -1,0 +1,10 @@
+<%- include('./partials/header.ejs') %>
+
+<h1>Recipe Search</h1>
+<form action="/recipes" method="GET">
+    <label for="query">Search for recipes:</label>
+    <input type="text" id="query" name="query" required>
+    <button type="submit">Search</button>
+</form>
+
+<%- include('./partials/footer.ejs') %>
