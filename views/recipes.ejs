@@ -3,18 +3,23 @@
 <h1>Recipes</h1>
 <ul>
   <% recipes.forEach(recipe => { %>
-  <li>
-    <h2><%= recipe.title %></h2>
-    <p>Preparation time: <%= recipe.readyInMinutes %> minutes</p>
-    <p>Servings: <%= recipe.servings %></p>
-    <p><a href="<%= recipe.sourceUrl %>" target="_blank">View Recipe</a></p>
-    <form action="/favorites/add" method="POST">
-      <input type="hidden" name="recipeId" value="<%= recipe.id %>" />
-      <input type="hidden" name="title" value="<%= recipe.title %>" />
-      <input type="hidden" name="sourceUrl" value="<%= recipe.sourceUrl %>" />
-      <button type="submit">Add to Favorites</button>
-    </form>
-  </li>
+    <li>
+      <h2><%= recipe.label %></h2>
+      <img src="<%= recipe.image %>" alt="<%= recipe.label %>" />
+      <p>Preparation time: <%= recipe.totalTime %> minutes</p>
+      <p>Servings: <%= recipe.yield %></p>
+      <p><a href="<%= recipe.url %>" target="_blank">View Recipe</a></p>
+      <form action="/favorites/add" method="POST">
+        <input type="hidden" name="recipeId" value="<%= recipe.uri %>" />
+        <input type="hidden" name="title" value="<%= recipe.label %>" />
+        <input type="hidden" name="sourceUrl" value="<%= recipe.url %>" />
+        <input type="hidden" name="imageUrl" value="<%= recipe.image %>">
+        <input type="hidden" name="preparationTime" value="<%= recipe.totalTime %>">
+        <input type="hidden" name="servings" value="<%= recipe.yield %>">
+        <button type="submit">Add to Favorites</button>
+      </form>
+    </li>
   <% }); %>
 </ul>
+
 <%- include('./partials/footer.ejs') %>
