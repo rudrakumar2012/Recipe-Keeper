@@ -1,12 +1,23 @@
 <%- include('./partials/header.ejs') %>
 
-<h1>Welcome to Recipe Keeper</h1>
-<p>Explore and discover delicious recipes!</p>
-
-<!-- Button to discover random recipes -->
-<form action="/random-recipes" method="GET">
-  <button type="submit">Discover Random Recipe</button>
-</form>
+<div class="Hero" style="background-color: #064E3B;">
+  <div class="container col-xxl-8 px-3 py-4">
+    <div class="row flex-lg-row align-items-center g-4 py-4">
+      <div class="col-lg-6 order-lg-2 mt-lg-4">
+        <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 hero-heading">Savor Every Flavor</h1>
+        <p class="lead" style="font-family: 'Lato', sans-serif; color: #E5E7EB; font-weight: 500;">Organize your culinary collection</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <form action="/random-recipes" method="GET">
+            <button type="submit" class="btn btn-primary btn-lg me-md-2">Discover Recipes</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <img src="assets/heroimg.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+    </div>
+  </div>
+</div>
 
 <h2>Recipe Search</h2>
 <form action="/recipes" method="GET">
@@ -16,6 +27,5 @@
 </form>
 
 <br />
-<a href="/favorites">View Favorite Recipes</a>
 
 <%- include('./partials/footer.ejs') %>

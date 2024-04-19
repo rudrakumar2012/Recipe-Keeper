@@ -10,6 +10,7 @@ body {
 .navbar-light .navbar-nav .nav-link {
     color: #064E3B !important;
     font-weight: 450;
+    font-family: "Lato", sans-serif;
 }
 
 .btn-get-started {
@@ -36,10 +37,34 @@ body {
     width: 100%;
 }
 
-.btn-outline-dark{
+.btn-outline-dark {
+    background-color: #65A30D !important;
+    border: none !important;
+}
+
+.btn-outline-dark:hover {
     background-color: #064E3B !important;
 }
 
-.btn-outline-dark:hover{
-    background-color: #65A30D  !important;
+/* Custom styles for hero heading */
+.hero-heading {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 72px;
+    color: #D1FAE5;
+    text-shadow:
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.btn-primary {
+    font-family: 'Lato', sans-serif; 
+    padding: 1.5vh 10vh 1.5vh 10vh !important; 
+    margin-top: 1.5vh !important;
+    color: #ECFDF5 !important;
+    background-color: #65A30D !important;
+    border: none !important;
 }
