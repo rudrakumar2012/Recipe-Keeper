@@ -1,5 +1,45 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body {
+    background-color: #ECFDF5;
+    color: #064E3B;
+}
+
+.navbar {
+    background-color: #ECFDF5;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #064E3B !important;
+    font-weight: 450;
+}
+
+.btn-get-started {
+    background-color: #65A30D !important;
+    color: #ECFDF5 !important;
+    border: none;
+}
+
+.navbar-nav .nav-item {
+    margin: 1vh;
+}
+
+.btn-get-started:hover {
+    background-color: #064E3B !important;
+    color: #ECFDF5 !important;
+}
+
+/* Additional styles for footer */
+.text-body-secondary {
+    color: #059669 !important;
+}
+
+.form-control {
+    width: 100%;
+}
+
+.btn-outline-dark{
+    background-color: #064E3B !important;
+}
+
+.btn-outline-dark:hover{
+    background-color: #65A30D  !important;
 }
