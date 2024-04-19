@@ -21,6 +21,7 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+//Fetch recipes
 app.get("/recipes", async (req, res) => {
   try {
     const { query } = req.query;
@@ -39,6 +40,7 @@ app.get("/recipes", async (req, res) => {
   }
 });
 
+//Fetch random recipes
 app.get("/random-recipes", async (req, res) => {
   try {
     const apiKey = process.env.EDAMAM_API_KEY;
@@ -67,6 +69,7 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 })
 
+//Favorites
 app.get("/favorites", async (req, res) => {
   try {
     const queryText = "SELECT * FROM favorites ORDER BY id ASC";
@@ -79,6 +82,7 @@ app.get("/favorites", async (req, res) => {
   }
 });
 
+//Add favorite
 app.post("/favorites/add", async (req, res) => {
   try {
     const { recipeId, title, sourceUrl, imageUrl, preparationTime, servings } = req.body;
@@ -106,7 +110,7 @@ app.post("/favorites/add", async (req, res) => {
   }
 });
 
-
+//Remove favorite
 app.post("/favorites/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -121,6 +125,7 @@ app.post("/favorites/:id", async (req, res) => {
   }
 });
 
+//Add or update note
 app.post("/favorites/:id/note", async (req, res) => {
   try {
     const { id } = req.params;
@@ -143,6 +148,24 @@ app.post("/favorites/:id/note", async (req, res) => {
   } catch (error) {
     console.error("Error updating note:", error.message);
     res.status(500).send("Error updating note");
+  }
+});
+
+//Delete note
+app.delete("/favorites/:id/note", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const queryText = 
+    "UPDATE favorites SET note = NULL WHERE id = $1;";
+
+    const values = [id];
+    await db.query(queryText, values);
+
+    res.sendStatus(204); // Send a success response with no content
+  } catch (error) {
+    console.error("Error deleting note:", error.message);
+    res.status(500).send("Error deleting note");
   }
 });
 

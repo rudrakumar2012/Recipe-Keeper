@@ -10,22 +10,31 @@
         <h2><%= favorite.title %></h2>
         <p>Source URL: <a href="<%= favorite.source_url %>" target="_blank"><%= favorite.source_url %></a></p>
         <img src="<%= favorite.image_url %>" alt="<%= favorite.title %>">
+        <p>Preparation Time: <%= favorite.preparation_time %> minutes</p>
+        <p>Servings: <%= favorite.servings %></p>
 
-        <!-- Display Note or Note Form based on existence of note -->
+          <!-- Display Note or Note Form based on existence of note -->
         <% if (favorite.note) { %>
           <span>Note:</span>
           <p id="note<%= favorite.id %>"><%= favorite.note %></p>
-          <form action="/favorites/<%= favorite.id %>/note" method="POST">
-            <textarea name="note" placeholder="Edit note..."><%= favorite.note %></textarea>
-            <button type="submit">Save Note</button>
-          </form>
+          <button onclick="toggleEdit('<%= favorite.id %>')">Edit Note</button>
+          <button onclick="deleteNote('<%= favorite.id %>')">Delete Note</button>
         <% } else { %>
-          <form action="/favorites/<%= favorite.id %>/note" method="POST">
-            <textarea name="note" placeholder="Add a note..."></textarea>
-            <button type="submit">Add Note</button>
-          </form>
+          <p>No note added.</p>
+          <button onclick="showAddNoteForm('<%= favorite.id %>')">Add Note</button>
         <% } %>
-
+        <!-- Form to add/edit note -->
+        <form id="noteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
+          <textarea name="note" id="noteTextarea<%= favorite.id %>" placeholder="Add or edit a note..."></textarea>
+          <button type="submit" id="saveNoteButton<%= favorite.id %>">Save Note</button>
+        </form>
+        
+        <!-- Form to delete note -->
+        <form id="deleteNoteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" id="deleteNoteButton<%= favorite.id %>">Confirm Delete</button>
+        </form>
+        <!-- Form to delete recipe -->
         <form action="/favorites/<%= favorite.id %>" method="POST">
           <input type="hidden" name="_method" value="DELETE">
           <button type="submit">Remove from Favorites</button>
@@ -34,5 +43,46 @@
     <% }); %>
   </ul>
 <% } %>
+
+<script>
+  function toggleEdit(id) {
+    const noteDisplay = document.getElementById(`note${id}`);
+    const noteForm = document.getElementById(`noteForm${id}`);
+    const noteTextarea = document.getElementById(`noteTextarea${id}`);
+    const saveNoteButton = document.getElementById(`saveNoteButton${id}`);
+    const deleteNoteForm = document.getElementById(`deleteNoteForm${id}`);
+    const deleteNoteButton = document.getElementById(`deleteNoteButton${id}`);
+    if (noteDisplay && noteForm) {
+      noteDisplay.style.display = 'none';
+      noteForm.style.display = 'block';
+      noteTextarea.value = noteDisplay.innerText.trim();
+      saveNoteButton.innerText = 'Save';
+    }
+    if (deleteNoteForm && deleteNoteButton) {
+      deleteNoteForm.style.display = 'block';
+      deleteNoteButton.innerText = 'Cancel Delete';
+    }
+  }
+  async function showAddNoteForm(id) {
+    const noteForm = document.getElementById(`noteForm${id}`);
+    const noteTextarea = document.getElementById(`noteTextarea${id}`);
+    if (noteForm && noteTextarea) {
+      noteForm.style.display = 'block';
+      noteTextarea.value = '';
+    }
+  }
+  async function deleteNote(id) {
+    const deleteNoteForm = document.getElementById(`deleteNoteForm${id}`);
+    const deleteNoteButton = document.getElementById(`deleteNoteButton${id}`);
+    if (deleteNoteForm && deleteNoteButton) {
+      if (deleteNoteButton.innerText === 'Confirm Delete') {
+        deleteNoteForm.submit();
+      } else {
+        // Toggle back to confirmation state
+        deleteNoteButton.innerText = 'Confirm Delete';
+      }
+    }
+  }
+</script>
 
 <%- include('./partials/footer.ejs') %>
