@@ -46,7 +46,10 @@ body {
     background-color: #064E3B !important;
 }
 
-/* Custom styles for hero heading */
+.Hero {
+    padding-bottom: 3vh;
+}
+
 .hero-heading {
     font-family: "Playfair Display", serif;
     font-optical-sizing: auto;
@@ -59,6 +62,28 @@ body {
         -1px 1px 0 #000,
         1px 1px 0 #000;
 }
+.Hero2 {
+    padding-top: 7vh;
+}
+.hero-heading2 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 56px;
+    color: #064E3B;
+}
+
+h5 {
+    font-family: 'Lato', serif;
+    font-optical-sizing: auto;
+    color: #064E3B;
+    padding-bottom: 0.5vh;
+}
+
+p{
+    font-family: 'Lato', sans-serif;
+    color: #059669;
+}
 
 .btn-primary {
     font-family: 'Lato', sans-serif; 
@@ -67,4 +92,69 @@ body {
     color: #ECFDF5 !important;
     background-color: #65A30D !important;
     border: none !important;
+}
+
+.signup {
+    background-image: url('/assets/lummi.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.card {
+    border-radius: 5% !important;
+    max-width: 50vh;
+}
+
+.card-header1 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 42px;
+    color: #064E3B;
+    text-align: center;
+    padding-top: 2vh;
+}
+
+.card-title1 {
+    font-family: 'Lato', serif;
+    font-optical-sizing: auto;
+    color: #059669;
+    font-size: 24px;
+    padding-bottom: 2vh;
+    text-align: center;
+}
+
+.btn-google {
+    background-color: #DCFCE7 !important;
+    border: #A7F3D0 1px solid !important;
+    color: #064E3B !important;
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    font-weight: 600 !important;
+    padding: 1.5vh 10vh 1.5vh 10vh !important;
+
+}
+
+.form-label {
+    font-family: 'Lato', sans-serif;
+    color: #064E3B;
+    font-weight: bold;
+
+}
+
+.form-control {
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    border: #A7F3D0 1px solid !important;
+    background-color: #ECFDF5 !important;
+}
+
+input::placeholder {
+    font-family: 'Lato', sans-serif;
+    color: #059669 !important;
 }
