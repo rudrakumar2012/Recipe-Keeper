@@ -8,15 +8,15 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const { Pool } = pg;
 
-const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "recipe-keeper",
-  password: process.env.DB_PASSWORD,
-  port: 5432,
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
-db.connect();
+await db.connect(() => console.log("Connected to database"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));

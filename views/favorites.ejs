@@ -6,7 +6,7 @@
   <h1 class="title2">Favorite Recipes</h1>
   <br>
   <% if (favorites.length === 0) { %>
-    <p>No recipes added to favorites yet.</p>
+    <p style="font-size: 28px; text-align: center;">No recipes added to favorites yet.</p>
   <% } else { %>
     <div class="row row-cols-1 row-cols-md-2 g-3">
       <% favorites.forEach(favorite => { %>
@@ -34,7 +34,7 @@
   
               <!-- Form to add/edit note -->
               <form id="noteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
-                <div class="form-group">
+                <div class="form-group mt-3">
                   <textarea class="form-control" name="note" id="noteTextarea<%= favorite.id %>" placeholder="Add or edit a note..."></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm">Save Note</button>
