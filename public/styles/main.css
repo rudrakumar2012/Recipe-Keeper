@@ -94,7 +94,10 @@ p{
     border: none !important;
 }
 
-
+.btn-primary:hover {
+    background-color: #ECFDF5  !important;
+    color: #65A30D  !important;
+}
 
 .signup {
     background-image: url('/assets/lummi.png');
@@ -132,6 +135,25 @@ p{
     text-align: center;
 }
 
+.card-title2 {
+    font-family: 'Lato', serif;
+    font-optical-sizing: auto;
+    color: #059669;
+    font-size: 24px;
+    padding-bottom: 2vh;
+    text-align: center;
+}
+
+.title2 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: 42px;
+    color: #064E3B;
+    text-align: center;
+    padding-top: 2vh;
+}
+
 .btn-google {
     background-color: #DCFCE7 !important;
     border: #A7F3D0 1px solid !important;
@@ -165,4 +187,9 @@ p{
 .form-control::placeholder {
     font-family: 'Lato', sans-serif;
     color: #059669 !important;
+}
+
+.favcards{
+    font-family: 'Lato', serif;
+    font-optical-sizing: auto;
 }

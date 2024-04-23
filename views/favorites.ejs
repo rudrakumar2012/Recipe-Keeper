@@ -1,86 +1,110 @@
 <%- include('./partials/header.ejs') %>
 
-<h1>Favorite Recipes</h1>
-<% if (favorites.length === 0) { %>
-  <p>No recipes added to favorites yet.</p>
-<% } else { %>
-  <ul>
-    <% favorites.forEach(favorite => { %>
-      <li>
-        <h2><%= favorite.title %></h2>
-        <p>Source URL: <a href="<%= favorite.source_url %>" target="_blank"><%= favorite.source_url %></a></p>
-        <img src="<%= favorite.image_url %>" alt="<%= favorite.title %>">
-        <p>Preparation Time: <%= favorite.preparation_time %> minutes</p>
-        <p>Servings: <%= favorite.servings %></p>
+<div class="favorite" style="background-color: #ECFDF5;">
+  <br>
+  <hr>
+  <h1 class="title2">Favorite Recipes</h1>
+  <br>
+  <% if (favorites.length === 0) { %>
+    <p>No recipes added to favorites yet.</p>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+      <% favorites.forEach(favorite => { %>
+        <div class="col mb-4 favcards">
+          <div class="card shadow-sm h-100">
+            <img src="<%= favorite.image_url %>" class="card-img-top" alt="<%= favorite.title %>">
+            <div class="card-body">
+              <h2 class="card-title2"><%= favorite.title %></h2>
+              <p class="card-text">Preparation Time: <%= favorite.preparation_time %> minutes</p>
+              <p class="card-text">Servings: <%= favorite.servings %></p>
+              <a href="<%= favorite.source_url %>" target="_blank" class="btn btn-primary mb-3">View Source</a>
+  
+              <!-- Display Note or Note Form based on existence of note -->
+              <% if (favorite.note) { %>
+                <div class="mb-3">
+                  <span>Note:</span>
+                  <p id="note<%= favorite.id %>"><%= favorite.note %></p>
+                  <button onclick="toggleEdit('<%= favorite.id %>')" class="btn btn-sm btn-secondary">Edit Note</button>
+                  <button onclick="deleteNote('<%= favorite.id %>')" class="btn btn-sm btn-danger">Delete Note</button>
+                </div>
+              <% } else { %>
+                <p class="mb-3">No note added.</p>
+                <button onclick="showAddNoteForm('<%= favorite.id %>')" class="btn btn-sm btn-success">Add Note</button>
+              <% } %>
+  
+              <!-- Form to add/edit note -->
+              <form id="noteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
+                <div class="form-group">
+                  <textarea class="form-control" name="note" id="noteTextarea<%= favorite.id %>" placeholder="Add or edit a note..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Save Note</button>
+              </form>
+  
+              <!-- Form to delete recipe -->
+              <form action="/favorites/<%= favorite.id %>" method="POST" class="mt-3">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-warning btn-sm">Remove from Favorites</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+<hr>
+<br>
+</div>
 
-          <!-- Display Note or Note Form based on existence of note -->
-        <% if (favorite.note) { %>
-          <span>Note:</span>
-          <p id="note<%= favorite.id %>"><%= favorite.note %></p>
-          <button onclick="toggleEdit('<%= favorite.id %>')">Edit Note</button>
-          <button onclick="deleteNote('<%= favorite.id %>')">Delete Note</button>
-        <% } else { %>
-          <p>No note added.</p>
-          <button onclick="showAddNoteForm('<%= favorite.id %>')">Add Note</button>
-        <% } %>
-        <!-- Form to add/edit note -->
-        <form id="noteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
-          <textarea name="note" id="noteTextarea<%= favorite.id %>" placeholder="Add or edit a note..."></textarea>
-          <button type="submit" id="saveNoteButton<%= favorite.id %>">Save Note</button>
-        </form>
-        
-        <!-- Form to delete note -->
-        <form id="deleteNoteForm<%= favorite.id %>" action="/favorites/<%= favorite.id %>/note" method="POST" style="display:none;">
-          <input type="hidden" name="_method" value="DELETE">
-          <button type="submit" id="deleteNoteButton<%= favorite.id %>">Confirm Delete</button>
-        </form>
-        <!-- Form to delete recipe -->
-        <form action="/favorites/<%= favorite.id %>" method="POST">
-          <input type="hidden" name="_method" value="DELETE">
-          <button type="submit">Remove from Favorites</button>
-        </form>
-      </li>
-    <% }); %>
-  </ul>
-<% } %>
 
 <script>
-  function toggleEdit(id) {
+    // Toggles the edit mode for a note.
+    // 
+    // Parameters:
+    // - id: The ID of the note. (number)
+    // 
+    // Returns:
+    // - None
+    function toggleEdit(id) {
     const noteDisplay = document.getElementById(`note${id}`);
     const noteForm = document.getElementById(`noteForm${id}`);
     const noteTextarea = document.getElementById(`noteTextarea${id}`);
-    const saveNoteButton = document.getElementById(`saveNoteButton${id}`);
-    const deleteNoteForm = document.getElementById(`deleteNoteForm${id}`);
-    const deleteNoteButton = document.getElementById(`deleteNoteButton${id}`);
-    if (noteDisplay && noteForm) {
+    
+    if (noteDisplay && noteForm && noteTextarea) {
       noteDisplay.style.display = 'none';
       noteForm.style.display = 'block';
       noteTextarea.value = noteDisplay.innerText.trim();
-      saveNoteButton.innerText = 'Save';
-    }
-    if (deleteNoteForm && deleteNoteButton) {
-      deleteNoteForm.style.display = 'block';
-      deleteNoteButton.innerText = 'Cancel Delete';
     }
   }
-  async function showAddNoteForm(id) {
+  
+      // Displays the add note form for a recipe.
+      // 
+      // Parameters:
+      // - id: The ID of the recipe. (number)
+      // 
+      // Returns:
+      // - None
+    async function showAddNoteForm(id) {
     const noteForm = document.getElementById(`noteForm${id}`);
     const noteTextarea = document.getElementById(`noteTextarea${id}`);
+    
     if (noteForm && noteTextarea) {
       noteForm.style.display = 'block';
       noteTextarea.value = '';
     }
   }
-  async function deleteNote(id) {
-    const deleteNoteForm = document.getElementById(`deleteNoteForm${id}`);
-    const deleteNoteButton = document.getElementById(`deleteNoteButton${id}`);
-    if (deleteNoteForm && deleteNoteButton) {
-      if (deleteNoteButton.innerText === 'Confirm Delete') {
-        deleteNoteForm.submit();
-      } else {
-        // Toggle back to confirmation state
-        deleteNoteButton.innerText = 'Confirm Delete';
-      }
+  
+    // Deletes a note with the specified ID.
+    // 
+    // Parameters:
+    // - id: The ID of the note to be deleted. (number)
+    // 
+    // Returns:
+    // - None
+    async function deleteNote(id) {
+    const deleteNoteForm = document.querySelector(`form#noteForm${id}`);
+    
+    if (deleteNoteForm) {
+      deleteNoteForm.submit();
     }
   }
 </script>

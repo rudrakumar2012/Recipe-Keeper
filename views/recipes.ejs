@@ -1,25 +1,42 @@
 <%- include('./partials/header.ejs') %>
 
-<h1>Recipes</h1>
-<ul>
-  <% recipes.forEach(recipe => { %>
-    <li>
-      <h2><%= recipe.label %></h2>
-      <img src="<%= recipe.image %>" alt="<%= recipe.label %>" />
-      <p>Preparation time: <%= recipe.totalTime %> minutes</p>
-      <p>Servings: <%= recipe.yield %></p>
-      <p><a href="<%= recipe.url %>" target="_blank">View Recipe</a></p>
-      <form action="/favorites/add" method="POST">
-        <input type="hidden" name="recipeId" value="<%= recipe.uri %>" />
-        <input type="hidden" name="title" value="<%= recipe.label %>" />
-        <input type="hidden" name="sourceUrl" value="<%= recipe.url %>" />
-        <input type="hidden" name="imageUrl" value="<%= recipe.image %>">
-        <input type="hidden" name="preparationTime" value="<%= recipe.totalTime %>">
-        <input type="hidden" name="servings" value="<%= recipe.yield %>">
-        <button type="submit">Add to Favorites</button>
-      </form>
-    </li>
-  <% }); %>
-</ul>
+<div class="album py-5 bg-body-tertiary" style="background-color: #ECFDF5;">
+    <hr>
+    <h1 class="title2">Discover Exciting Recipes!</h1>
+    <br>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <% recipes.forEach(recipe => { %>
+                <div class="col mb-4">
+                    <div class="card shadow-sm">
+                        <img src="<%= recipe.image %>" class="bd-placeholder-img card-img-top" width="100%" height="225" alt="<%= recipe.label %>">
+                        <div class="card-body">
+                            <h5 class="card-title1"><%= recipe.label %></h5>
+                            <p class="card-text">Preparation time: <%= recipe.totalTime %> minutes</p>
+                            <p class="card-text">Servings: <%= recipe.yield %></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="<%= recipe.url %>" class="btn btn-sm btn-outline-secondary" target="_blank">View</a>
+                                    <form action="/favorites/add" method="POST">
+                                        <input type="hidden" name="recipeId" value="<%= recipe.uri %>">
+                                        <input type="hidden" name="title" value="<%= recipe.label %>">
+                                        <input type="hidden" name="sourceUrl" value="<%= recipe.url %>">
+                                        <input type="hidden" name="imageUrl" value="<%= recipe.image %>">
+                                        <input type="hidden" name="preparationTime" value="<%= recipe.totalTime %>">
+                                        <input type="hidden" name="servings" value="<%= recipe.yield %>">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Favorites</button>
+                                    </form>
+                                </div>
+                                <small class="text-body-secondary">Prep time: <%= recipe.totalTime %> mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    <br>
+    <hr>
+</div>
 
 <%- include('./partials/footer.ejs') %>

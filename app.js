@@ -28,11 +28,8 @@ app.get("/recipes", async (req, res) => {
     const apiKey = process.env.EDAMAM_API_KEY;
     const appId = process.env.EDAMAM_APP_ID;
     const searchUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${apiKey}`;
-
     const response = await axios.get(searchUrl);
     const recipes = response.data.hits.map(hit => hit.recipe);
-
-    console.log(recipes);
     res.render("recipes.ejs", { recipes });
   } catch (error) {
     console.error("Error fetching recipes:", error.message);
@@ -46,18 +43,12 @@ app.get("/random-recipes", async (req, res) => {
     const apiKey = process.env.EDAMAM_API_KEY;
     const appId = process.env.EDAMAM_APP_ID;
     const defaultQuery = "recipe";
-     // Generate random values for 'from' and 'to' parameters
-     const minIndex = 0;
-     const maxIndex = 95; // Adjust this based on the total number of recipes available
-     const randomFrom = Math.floor(Math.random() * maxIndex); // Random 'from' value
-     
-     const randomTo = randomFrom + 5; // Fetch 5 recipes starting from random 'from' value
-     
-     const apiUrl = `https://api.edamam.com/search?q=${defaultQuery}&app_id=${appId}&app_key=${apiKey}&from=${randomFrom}&to=${randomTo}`;
-
+    const maxIndex = 95; 
+    const randomFrom = Math.floor(Math.random() * maxIndex); 
+    const randomTo = randomFrom + 5; 
+    const apiUrl = `https://api.edamam.com/search?q=${defaultQuery}&app_id=${appId}&app_key=${apiKey}&from=${randomFrom}&to=${randomTo}`;
     const response = await axios.get(apiUrl);
     const recipes = response.data.hits.map(hit => hit.recipe);
-    console.log(recipes);
     res.render("recipes.ejs", { recipes });
   } catch (error) {
     console.error("Error fetching random recipes:", error.message);
@@ -162,7 +153,7 @@ app.delete("/favorites/:id/note", async (req, res) => {
     const values = [id];
     await db.query(queryText, values);
 
-    res.sendStatus(204); // Send a success response with no content
+    res.sendStatus(204);
   } catch (error) {
     console.error("Error deleting note:", error.message);
     res.status(500).send("Error deleting note");
