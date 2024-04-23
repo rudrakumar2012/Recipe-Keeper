@@ -110,7 +110,7 @@
           <div class="card-header1">Join Today</div>
           <div class="card-body">
             <h5 class="card-title1">Start your culinary journey today!</h5>
-            <a href="#" class="btn btn-block btn-google">
+            <a href="#" class="btn btn-block btn-google rounded">
               <img class="mx-2" src="assets/Google-Icon.png" alt="googleicon"> Sign Up With Google
             </a>
             <div class="text-center my-3 d-flex align-items-center">
@@ -125,15 +125,15 @@
             <form>
               <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control py-4" id="email" placeholder="Enter your email">
+                <input type="email" class="form-control py-4 rounded" id="email" placeholder="Enter your email">
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control py-4" id="password" placeholder="Enter your password">
+                <input type="password" class="form-control py-4 rounded" id="password" placeholder="Enter your password">
               </div>
-              <button type="submit" class="btn btn-primary btn-block">Register with Email</button>
+              <button type="submit" class="btn btn-primary btn-block rounded">Register with Email</button>
             </form>
-            <small class="text-muted mt-3">
+            <small class="small mt-3">
               By signing up you accept our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
             </small>
           </div>
@@ -146,15 +146,5 @@
     </div>
   </div>  
 </div>
-
-
-<h2>Recipe Search</h2>
-<form action="/recipes" method="GET">
-  <label for="query">Search for recipes:</label>
-  <input type="text" id="query" name="query" required />
-  <button type="submit">Search</button>
-</form>
-
-<br />
 
 <%- include('./partials/footer.ejs') %>

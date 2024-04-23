@@ -94,6 +94,8 @@ p{
     border: none !important;
 }
 
+
+
 .signup {
     background-image: url('/assets/lummi.png');
     background-size: cover;
@@ -107,7 +109,8 @@ p{
 
 .card {
     border-radius: 5% !important;
-    max-width: 50vh;
+    max-width: 550px; 
+    margin: 0 auto; 
 }
 
 .card-header1 {
@@ -136,8 +139,8 @@ p{
     font-family: 'Lato', sans-serif;
     font-size: 24px;
     font-weight: 600 !important;
-    padding: 1.5vh 10vh 1.5vh 10vh !important;
-
+    padding: 15px 40px !important;
+    margin-top: 20px !important;
 }
 
 .form-label {
@@ -154,7 +157,12 @@ p{
     background-color: #ECFDF5 !important;
 }
 
-input::placeholder {
+.small {
+    font-family: 'Lato', sans-serif;
+    color: #059669 !important;
+}
+
+.form-control::placeholder {
     font-family: 'Lato', sans-serif;
     color: #059669 !important;
 }
